@@ -1,9 +1,26 @@
 import Image from "next/image";
 import styles from "./singlePost.module.css";
 
-const SinglePostPage = ({ params, searchParams }) => {
-  console.log("params", params);
-  console.log("searchParams", searchParams);
+const getData = async (slug) => {
+  const res = await fetch(
+    `https://jsonplaceholder.typicode.com/posts/${slug}`,
+    {
+      // revalidate every 60 seconds
+      next: { revalidate: 60 },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  const data = await res.json();
+  return data;
+};
+
+const SinglePostPage = async ({ params, searchParams }) => {
+  const { slug } = params;
+  const post = await getData(slug);
 
   return (
     <div className={styles.container}>
@@ -11,7 +28,7 @@ const SinglePostPage = ({ params, searchParams }) => {
         <Image src="/about.png" alt="" fill className={styles.img} />
       </div>
       <div className={styles.textContainer}>
-        <h1 className={styles.title}>Lorem ipsum dolor sit amet</h1>
+        <h1 className={styles.title}>{post.title}</h1>
         <div className={styles.detail}>
           <Image
             src="/about.png"
@@ -31,10 +48,7 @@ const SinglePostPage = ({ params, searchParams }) => {
             <span className={styles.detailValue}>11/12/23</span>
           </div>
         </div>
-        <div className={styles.content}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac odio
-          nec justo. Morbi tincidunt, dui sit amet facilisis feugiat, odio metus
-        </div>
+        <div className={styles.content}>{post.body}</div>
       </div>
     </div>
   );
