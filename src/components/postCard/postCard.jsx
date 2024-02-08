@@ -17,7 +17,7 @@ const PostCard = () => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac odio
           nec justo
         </p>
-        <Link className={styles.link} href="/">
+        <Link className={styles.link} href="/blog/12">
           READ MORE
         </Link>
       </div>
