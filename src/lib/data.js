@@ -1,3 +1,6 @@
+import { NextJSPost, NextJSUser } from "./models";
+import { connectToDB } from "./utils";
+
 // temp data
 const users = [
   {
@@ -27,14 +30,46 @@ const posts = [
   },
 ];
 
-export const getPosts = () => {
-  return posts;
+export const getPosts = async () => {
+  try {
+    await connectToDB();
+    const posts = await NextJSPost.find();
+    return posts;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error getting posts");
+  }
 };
 
-export const getPost = (id) => {
-  return posts.find((post) => post.id === parseInt(id));
+export const getPost = async (slug) => {
+  try {
+    await connectToDB();
+    const post = await NextJSPost.find({ slug: slug });
+    return post;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error getting post");
+  }
 };
 
-export const getUser = (id) => {
-  return users.find((user) => user.id === parseInt(id));
+export const getUser = async (id) => {
+  try {
+    await connectToDB();
+    const user = await NextJSUser.findById(id);
+    return user;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error getting user");
+  }
+};
+
+export const getUsers = async () => {
+  try {
+    await connectToDB();
+    const users = await NextJSUser.find();
+    return users;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error getting users");
+  }
 };
