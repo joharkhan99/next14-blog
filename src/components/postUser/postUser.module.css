@@ -12,3 +12,14 @@
 .username {
   font-weight: 500;
 }
+
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}

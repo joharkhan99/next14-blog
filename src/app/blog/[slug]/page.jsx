@@ -29,20 +29,14 @@ const SinglePostPage = async ({ params, searchParams }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.imgContainer}>
-        <Image src="/about.png" alt="" fill className={styles.img} />
-      </div>
+      {post.img && (
+        <div className={styles.imgContainer}>
+          <Image src={post.img} alt="" fill className={styles.img} />
+        </div>
+      )}
       <div className={styles.textContainer}>
         <h1 className={styles.title}>{post?.title}</h1>
         <div className={styles.detail}>
-          <Image
-            src="/about.png"
-            alt=""
-            className={styles.avatar}
-            width={50}
-            height={50}
-          />
-
           {post && (
             <Suspense fallback={<div>Loading...</div>}>
               <PostUser userId={post.userId} />
@@ -51,10 +45,10 @@ const SinglePostPage = async ({ params, searchParams }) => {
 
           <div className={styles.detailText}>
             <span className={styles.detailTitle}>Published</span>
-            <span className={styles.detailValue}>11/12/23</span>
+            <span className={styles.detailValue}>{post?.createdAt}</span>
           </div>
         </div>
-        <div className={styles.content}>{post?.body}</div>
+        <div className={styles.content}>{post?.desc}</div>
       </div>
     </div>
   );
