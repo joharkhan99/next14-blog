@@ -22,6 +22,16 @@ import { getPost } from "@/lib/data";
   return data;
 }; */
 
+export const generateMetadata = async ({ params }) => {
+  const { slug } = params;
+  const post = await getPost(slug);
+
+  return {
+    title: post.title,
+    description: post.desc,
+  };
+};
+
 const SinglePostPage = async ({ params, searchParams }) => {
   const { slug } = params;
   // const post = await getData(slug);

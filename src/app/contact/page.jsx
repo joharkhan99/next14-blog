@@ -5,8 +5,6 @@ import styles from "./contact.module.css";
 export const metadata = {
   title: "Contact Page",
   description: "Contact description",
-
-  // Add more metadata
   keywords: "contact, contact us, contact page",
   robots: "index, follow",
 };
