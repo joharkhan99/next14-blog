@@ -5,7 +5,6 @@ import styles from "./links.module.css";
 import NavLink from "./navLink/navLink";
 import Image from "next/image";
 import { handleGithubLogout } from "@/lib/actions";
-import { auth } from "@/lib/auth";
 
 const links = [
   {
