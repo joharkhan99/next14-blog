@@ -5,26 +5,23 @@ import { Suspense } from "react";
 import { getPost } from "@/lib/data";
 
 // FETCH DATA WITH AN API
-/* const getData = async (slug) => {
-  const res = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${slug}`,
-    {
-      // revalidate every 60 seconds
-      next: { revalidate: 60 },
-    }
-  );
-
+const getData = async (slug) => {
+  const res = await fetch(`http://localhost:3000/api/blog/${slug}`, {
+    // revalidate every 60 seconds
+    next: { revalidate: 60 },
+  });
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
-
   const data = await res.json();
   return data;
-}; */
+};
 
 export const generateMetadata = async ({ params }) => {
   const { slug } = params;
-  const post = await getPost(slug);
+
+  // const post = await getPost(slug);
+  const post = await getData(slug);
 
   return {
     title: post.title,
@@ -34,8 +31,8 @@ export const generateMetadata = async ({ params }) => {
 
 const SinglePostPage = async ({ params, searchParams }) => {
   const { slug } = params;
-  // const post = await getData(slug);
-  const post = await getPost(slug);
+  // const post = await getPost(slug);
+  const post = await getData(slug);
 
   return (
     <div className={styles.container}>
