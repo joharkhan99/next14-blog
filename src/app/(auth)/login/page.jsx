@@ -1,4 +1,4 @@
-import { handleGithubLogin } from "@/lib/actions";
+import { handleGithubLogin, login } from "@/lib/actions";
 async function LoginPage() {
   return (
     <div>
@@ -6,6 +6,12 @@ async function LoginPage() {
       <p>Log in to your account to continue</p>
       <form action={handleGithubLogin}>
         <button>Login with GitHub</button>
+      </form>
+
+      <form action={login}>
+        <input type="text" placeholder="username" name="username" />
+        <input type="password" placeholder="password" name="password" />
+        <button>Login With Credentials</button>
       </form>
     </div>
   );

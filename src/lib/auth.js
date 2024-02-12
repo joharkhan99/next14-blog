@@ -1,7 +1,34 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDB } from "./utils";
 import { NextJSUser } from "./models";
+import bcrypt from "bcrypt";
+
+const login = async (credentials) => {
+  try {
+    connectToDB();
+    const user = await NextJSUser.findOne({ username: credentials.username });
+
+    if (!user) {
+      throw new Error("Wrong credentials! Invalid username");
+    }
+
+    const isPassCorrect = await bcrypt.compare(
+      credentials.password,
+      user.password
+    );
+
+    if (!isPassCorrect) {
+      throw new Error("Wrong credentials! Invalid password");
+    }
+
+    return user;
+  } catch (error) {
+    console.log(error);
+    throw new Error("failed to logjn");
+  }
+};
 
 export const {
   handlers: { GET, POST },
@@ -13,6 +40,17 @@ export const {
     GitHub({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
+    }),
+    CredentialsProvider({
+      async authorize(credentials) {
+        try {
+          const user = await login(credentials);
+          return user;
+        } catch (error) {
+          console.log(error);
+          return null;
+        }
+      },
     }),
   ],
   callbacks: {
