@@ -1,4 +1,4 @@
-import { NextJSPost, NextJSUser } from "./models";
+import { NextJSComment, NextJSPost, NextJSUser } from "./models";
 import { connectToDB } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -46,5 +46,19 @@ export const getUsers = async () => {
   } catch (error) {
     console.log(error);
     throw new Error("Error getting users");
+  }
+};
+
+export const getComments = async (postId) => {
+  try {
+    await connectToDB();
+    const comments = await NextJSComment.find({ postId: postId }).populate({
+      path: "user",
+      select: "-password -email -isAdmin",
+    });
+    return comments;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error getting comments");
   }
 };

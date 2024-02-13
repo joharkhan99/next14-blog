@@ -1,0 +1,52 @@
+/* 
+    <div className={styles.container}>
+      {comments.map((comment) => (
+        <div className={styles.comment} key={comment.id}>
+          <div className={styles.detail}>
+            <span className={styles.commentTitle}>{comment.user.username}</span>
+            <span className={styles.commentText}>{comment.desc}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+ */
+
+/* styles for above comment section */
+
+.container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+}
+
+.comment {
+  display: flex;
+  margin-bottom: 10px;
+  border: 1px solid #00eeff;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.commentTitle {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.commentText {
+  font-size: 14px;
+  color: #a8a8a8;
+  margin-top: 10px;
+}
+
+.commentDate {
+  font-size: 14px;
+  color: #a8a8a8;
+  margin-left: 10px;
+}

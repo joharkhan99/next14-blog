@@ -1,9 +1,9 @@
 "use server";
 
-import { NextJSPost, NextJSUser } from "./models";
+import { NextJSComment, NextJSPost, NextJSUser } from "./models";
 import { revalidatePath } from "next/cache";
 import { connectToDB } from "./utils";
-import { signIn, signOut } from "./auth";
+import { auth, signIn, signOut } from "./auth";
 import bcrypt from "bcrypt";
 
 export const addPost = async (prevState, formData) => {
@@ -50,6 +50,33 @@ export const addUser = async (prevState, formData) => {
   } catch (error) {
     console.log(error);
     throw new Error("Failed to add user");
+  }
+};
+
+export const addComment = async (prevState, formData) => {
+  const { postId, desc } = Object.fromEntries(formData);
+
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId || !postId || !desc) {
+    return { error: "Invalid data" };
+  }
+
+  try {
+    await connectToDB();
+    const newComment = new NextJSComment({
+      postId,
+      user: userId,
+      desc,
+    });
+    await newComment.save();
+    console.log("Comment added");
+    // this will revalidate the /blog page. It will be updated with the new post
+    revalidatePath(`/blog/${postId}`);
+  } catch (error) {
+    console.log(error);
+    return { error: "Failed to add comment" };
   }
 };
 
