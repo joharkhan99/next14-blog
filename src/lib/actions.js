@@ -6,7 +6,7 @@ import { connectToDB } from "./utils";
 import { signIn, signOut } from "./auth";
 import bcrypt from "bcrypt";
 
-export const addPost = async (formData) => {
+export const addPost = async (prevState, formData) => {
   const { title, desc, slug, userId } = Object.fromEntries(formData);
 
   try {
@@ -28,6 +28,28 @@ export const addPost = async (formData) => {
   }
 };
 
+export const addUser = async (prevState, formData) => {
+  const { username, email, password, image } = Object.fromEntries(formData);
+
+  try {
+    await connectToDB();
+    const newUser = new NextJSUser({
+      username,
+      email,
+      password,
+      image,
+    });
+    await newUser.save();
+    console.log("User added");
+
+    // this will revalidate the /blog page. It will be updated with the new post
+    revalidatePath("/admin");
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to add user");
+  }
+};
+
 export const deletePost = async (formData) => {
   const { id } = Object.fromEntries(formData);
 
@@ -39,6 +61,21 @@ export const deletePost = async (formData) => {
   } catch (error) {
     console.log(error);
     throw new Error("Failed to add post");
+  }
+};
+
+export const deleteUser = async (formData) => {
+  const { id } = Object.fromEntries(formData);
+
+  try {
+    await connectToDB();
+    await NextJSPost.deleteMany({ userId: id });
+    await NextJSUser.findByIdAndDelete(id);
+    console.log("User deleted");
+    revalidatePath("/admin");
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to add User");
   }
 };
 

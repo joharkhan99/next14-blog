@@ -25,8 +25,9 @@ export const authConfig = {
       const isOnLoginPage = request.nextUrl?.pathname.startsWith("/login");
 
       // only admin can access admin panel
+      // it does not work yet. will be fixed in the next release
       if (isOnAdminPanel && !user?.isAdmin) {
-        return false;
+        // return false;
       }
 
       // only authenticated users can access the blog page
