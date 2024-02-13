@@ -30,7 +30,8 @@ export const addPost = async (prevState, formData) => {
 };
 
 export const addUser = async (prevState, formData) => {
-  const { username, email, password, image } = Object.fromEntries(formData);
+  const { username, email, password, image, isAdmin } =
+    Object.fromEntries(formData);
 
   try {
     await connectToDB();
@@ -39,6 +40,7 @@ export const addUser = async (prevState, formData) => {
       email,
       password,
       image,
+      isAdmin,
     });
     await newUser.save();
     console.log("User added");
